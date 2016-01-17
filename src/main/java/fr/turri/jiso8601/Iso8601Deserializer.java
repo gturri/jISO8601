@@ -74,6 +74,10 @@ public class Iso8601Deserializer {
 			result.set(Calendar.MILLISECOND, 0);
 			String basicFormatDate = dateStr.replaceAll("-", "");
 
+			if ( basicFormatDate.indexOf('W') != -1 ){
+				return parseWeekDate(result, basicFormatDate);
+			}
+
 			if ( basicFormatDate.length() == 7 ){
 				return parseOrdinalDate(result, basicFormatDate);
 			}
@@ -100,6 +104,13 @@ public class Iso8601Deserializer {
 				return result;
 			}
 			throw new RuntimeException("Couldn't parse " + dateStr);
+	}
+
+	private static Calendar parseWeekDate(Calendar result, String basicFormatDate) {
+		result.set(Calendar.YEAR, Integer.parseInt(basicFormatDate.substring(0, 4)));
+		result.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(basicFormatDate.substring(5, 7)));
+		result.set(Calendar.DAY_OF_WEEK, basicFormatDate.length() == 7 ? 2 : (Integer.parseInt(basicFormatDate.substring(7)) + 1));
+		return result;
 	}
 
 	private static Calendar parseOrdinalDate(Calendar calendar, String basicFormatOrdinalDate) {
