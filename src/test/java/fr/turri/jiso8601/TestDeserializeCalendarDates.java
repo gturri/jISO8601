@@ -9,19 +9,6 @@ import java.util.TimeZone;
 import org.junit.*;
 
 public class TestDeserializeCalendarDates {
-	private TimeZone _previousTZ;
-
-	@Before
-	public void setUp(){
-		_previousTZ = TimeZone.getDefault();
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-	}
-
-	@After
-	public void tearDown(){
-		TimeZone.setDefault(_previousTZ);
-	}
-
 	@Test
 	public void canParseBasicFormat(){
 		assertExpectedDate(1985, Calendar.MARCH, 04, "19850304");
