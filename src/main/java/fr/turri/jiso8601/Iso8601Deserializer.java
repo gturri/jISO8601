@@ -73,6 +73,11 @@ public class Iso8601Deserializer {
 			result.set(Calendar.SECOND, 0);
 			result.set(Calendar.MILLISECOND, 0);
 			String basicFormatDate = dateStr.replaceAll("-", "");
+
+			if ( basicFormatDate.length() == 7 ){
+				return parseOrdinalDate(result, basicFormatDate);
+			}
+
 			if ( basicFormatDate.length() == 2 ){
 				result.set(Integer.parseInt(basicFormatDate) * 100, 0, 1);
 				return result;
@@ -95,5 +100,11 @@ public class Iso8601Deserializer {
 				return result;
 			}
 			throw new RuntimeException("Couldn't parse " + dateStr);
+	}
+
+	private static Calendar parseOrdinalDate(Calendar calendar, String basicFormatOrdinalDate) {
+		calendar.set(Calendar.YEAR, Integer.parseInt(basicFormatOrdinalDate.substring(0, 4)));
+		calendar.set(Calendar.DAY_OF_YEAR, Integer.parseInt(basicFormatOrdinalDate.substring(4)));
+		return calendar;
 	}
 }
