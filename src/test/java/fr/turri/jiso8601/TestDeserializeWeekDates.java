@@ -19,4 +19,9 @@ public class TestDeserializeWeekDates extends TestHelper {
 	public void canParseDateWithoutDay(){
 		assertExpectedDate(1985, Calendar.MARCH, 04, "1985-W10");
 	}
+
+	@Test
+	public void testBoundariesConditions(){
+		assertExpectedDate(2016, Calendar.JANUARY, 04, "2016-W01-1");
+	}
 }

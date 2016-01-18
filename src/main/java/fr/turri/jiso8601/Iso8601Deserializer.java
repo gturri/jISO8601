@@ -68,6 +68,7 @@ public class Iso8601Deserializer {
 
 	private static Calendar calendarWithDateOnly(String dateStr){
 			Calendar result = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+			result.setMinimalDaysInFirstWeek(4);
 			result.set(Calendar.HOUR_OF_DAY, 0);
 			result.set(Calendar.MINUTE, 0);
 			result.set(Calendar.SECOND, 0);
