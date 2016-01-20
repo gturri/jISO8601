@@ -16,11 +16,6 @@ public class TestDeserializeCalendarDates extends TestHelper {
 	}
 
 	@Test
-	public void canParseBasicFormatWithoutDay(){
-		assertExpectedDate(1985, Calendar.MARCH, 01, "198503");
-	}
-
-	@Test
 	public void canParseExtendedFormatWithoutDay(){
 		assertExpectedDate(1985, Calendar.MARCH, 01, "1985-03");
 	}
