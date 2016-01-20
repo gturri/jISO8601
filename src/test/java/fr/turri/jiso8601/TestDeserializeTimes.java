@@ -9,20 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TestDeserializeTimes {
-	private TimeZone _previousTZ;
-
-	@Before
-	public void setUp(){
-		_previousTZ = TimeZone.getDefault();
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-	}
-
-	@After
-	public void tearDown(){
-		TimeZone.setDefault(_previousTZ);
-	}
-
+public class TestDeserializeTimes extends TestHelper {
 	@Test
 	public void canParseBasicFormatHour(){
 		assertExpectedHour(12, 21, 36, "19850304T122136Z");
@@ -77,7 +64,6 @@ public class TestDeserializeTimes {
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"));
 		assertExpectedHour(20, 21, 36, "1985-03-04T12:21:36");
 	}
-
 
 	@Test
 	public void canParseBasicFormatTimeOffset() {
