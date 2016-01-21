@@ -92,6 +92,7 @@ public class TestDeserializeTimes extends TestHelper {
 		expected.set(1985, Calendar.MARCH, 04, hour, minute, second);
 		expected.set(Calendar.MILLISECOND, millisecond);
 
-		assertEquals(0, expected.compareTo(new Iso8601Deserializer().deserialize(toParse)));
+		assertEquals(0, expected.compareTo(new Iso8601Deserializer().toCalendar(toParse)));
+		assertEquals(expected.getTime(), new Iso8601Deserializer().toDate(toParse));
 	}
 }

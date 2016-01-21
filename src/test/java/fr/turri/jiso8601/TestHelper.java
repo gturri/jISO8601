@@ -26,6 +26,7 @@ public class TestHelper {
 		Calendar expected = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 		expected.set(year, month, day, 0, 0, 0);
 		expected.set(Calendar.MILLISECOND, 0);
-		assertEquals(0, expected.compareTo(new Iso8601Deserializer().deserialize(toParse)));
+		assertEquals(0, expected.compareTo(new Iso8601Deserializer().toCalendar(toParse)));
+		assertEquals(expected.getTime(), new Iso8601Deserializer().toDate(toParse));
 	}
 }

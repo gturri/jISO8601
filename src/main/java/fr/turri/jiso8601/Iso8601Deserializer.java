@@ -1,11 +1,16 @@
 package fr.turri.jiso8601;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class Iso8601Deserializer {
-	public Calendar deserialize(String toParse){
+	public Date toDate(String toParse){
+		return toCalendar(toParse).getTime();
+	}
+
+	public Calendar toCalendar(String toParse){
 		if ( toParse.indexOf('T') == -1 ){
 			return calendarWithDateOnly(toParse);
 		}
