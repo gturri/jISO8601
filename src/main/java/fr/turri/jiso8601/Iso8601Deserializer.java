@@ -14,10 +14,10 @@ public class Iso8601Deserializer {
 
 	public static Calendar toCalendar(String toParse){
 		if ( toParse.indexOf('T') == -1 ){
-			return calendarWithDateOnly(toParse);
+			return buildCalendarWithDateOnly(toParse, toParse);
 		}
 		int indexOfT = toParse.indexOf('T');
-		Calendar result = calendarWithDateOnly(toParse.substring(0, indexOfT));
+		Calendar result = buildCalendarWithDateOnly(toParse.substring(0, indexOfT), toParse);
 		String basicFormatHour = toParse.substring(indexOfT+1).replace(":", "");
 
 		int indexOfZ = basicFormatHour.indexOf('Z');
@@ -73,46 +73,58 @@ public class Iso8601Deserializer {
 		calendar.set(Calendar.MILLISECOND, (int) (fractionalPart * 1000));
 	}
 
-	private static Calendar calendarWithDateOnly(String dateStr){
-			Calendar result = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-			result.setMinimalDaysInFirstWeek(4);
-			result.setFirstDayOfWeek(Calendar.MONDAY);
-			result.set(Calendar.HOUR_OF_DAY, 0);
-			result.set(Calendar.MINUTE, 0);
-			result.set(Calendar.SECOND, 0);
-			result.set(Calendar.MILLISECOND, 0);
-			String basicFormatDate = dateStr.replaceAll("-", "");
+	private static Calendar buildCalendarWithDateOnly(String dateStr, String originalDate){
+		Calendar result = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+		result.setMinimalDaysInFirstWeek(4);
+		result.setFirstDayOfWeek(Calendar.MONDAY);
+		result.set(Calendar.HOUR_OF_DAY, 0);
+		result.set(Calendar.MINUTE, 0);
+		result.set(Calendar.SECOND, 0);
+		result.set(Calendar.MILLISECOND, 0);
+		String basicFormatDate = dateStr.replaceAll("-", "");
 
-			if ( basicFormatDate.indexOf('W') != -1 ){
-				return parseWeekDate(result, basicFormatDate);
-			}
+		if ( basicFormatDate.indexOf('W') != -1 ){
+			return parseWeekDate(result, basicFormatDate);
+		} else if ( basicFormatDate.length() == 7 ){
+			return parseOrdinalDate(result, basicFormatDate);
+		} else {
+			return parseCalendarDate(result, basicFormatDate, originalDate);
+		}
+	}
 
-			if ( basicFormatDate.length() == 7 ){
-				return parseOrdinalDate(result, basicFormatDate);
-			}
+	private static Calendar parseCalendarDate(Calendar result, String basicFormatDate, String originalDate){
+		if ( basicFormatDate.length() == 2 ){
+			return parseCalendarDateWithCenturyOnly(result, basicFormatDate);
+		} else if ( basicFormatDate.length() == 4){
+			return parseCalendarDateWithYearOnly(result, basicFormatDate);
+		} else {
+			return parseCalendarDateWithPrecisionGreaterThanYear(result, basicFormatDate, originalDate);
+		}
+	}
 
-			if ( basicFormatDate.length() == 2 ){
-				result.set(Integer.parseInt(basicFormatDate) * 100, 0, 1);
-				return result;
-			}
+	private static Calendar parseCalendarDateWithCenturyOnly(Calendar result, String basicFormatDate){
+		result.set(Integer.parseInt(basicFormatDate) * 100, 0, 1);
+		return result;
+	}
 
-			if ( basicFormatDate.length() == 4){
-				result.set(Integer.parseInt(basicFormatDate), 0, 1);
-				return result;
-			}
+	private static Calendar parseCalendarDateWithYearOnly(Calendar result, String basicFormatDate){
+		result.set(Integer.parseInt(basicFormatDate), 0, 1);
+		return result;
+	}
 
-			int year = Integer.parseInt(basicFormatDate.substring(0, 4));
-			int month = Integer.parseInt(basicFormatDate.substring(4, 6)) - 1;
-			if ( basicFormatDate.length() == 6 ){
-				result.set(year, month, 1);
-				return result;
-			}
+	private static Calendar parseCalendarDateWithPrecisionGreaterThanYear(Calendar result, String basicFormatDate, String originalDate){
+		int year = Integer.parseInt(basicFormatDate.substring(0, 4));
+		int month = Integer.parseInt(basicFormatDate.substring(4, 6)) - 1;
+		if ( basicFormatDate.length() == 6 ){
+			result.set(year, month, 1);
+			return result;
+		}
 
-			if ( basicFormatDate.length() == 8 ){
-				result.set(year, month, Integer.parseInt(basicFormatDate.substring(6)));
-				return result;
-			}
-			throw new RuntimeException("Couldn't parse " + dateStr);
+		if ( basicFormatDate.length() == 8 ){
+			result.set(year, month, Integer.parseInt(basicFormatDate.substring(6)));
+			return result;
+		}
+		throw new RuntimeException("Can't parse " + originalDate);
 	}
 
 	private static Calendar parseWeekDate(Calendar result, String basicFormatDate) {
