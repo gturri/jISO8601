@@ -18,19 +18,23 @@ public class Iso8601Deserializer {
 		}
 		int indexOfT = toParse.indexOf('T');
 		Calendar result = buildCalendarWithDateOnly(toParse.substring(0, indexOfT), toParse);
-		String basicFormatHour = toParse.substring(indexOfT+1).replace(":", "");
+		return parseHour(result, toParse.substring(indexOfT+1));
+	}
+
+	private static Calendar parseHour(Calendar result, String hourStr){
+		String basicFormatHour = hourStr.replace(":", "");
 
 		int indexOfZ = basicFormatHour.indexOf('Z');
 		if ( indexOfZ != -1 ){
-			parseHour(result, basicFormatHour.substring(0, indexOfZ));
+			parseHourWithoutHandlingTimeZone(result, basicFormatHour.substring(0, indexOfZ));
 		} else {
 			int indexOfSign = getIndexOfSign(basicFormatHour);
 			if ( indexOfSign == -1 ){
-				parseHour(result, basicFormatHour);
+				parseHourWithoutHandlingTimeZone(result, basicFormatHour);
 				result.setTimeZone(TimeZone.getDefault());
 			} else {
-				parseHour(result, basicFormatHour.substring(0, indexOfSign));
-				parseTimeZone(result, basicFormatHour.substring(indexOfSign));
+				parseHourWithoutHandlingTimeZone(result, basicFormatHour.substring(0, indexOfSign));
+				result.setTimeZone(TimeZone.getTimeZone("GMT" + basicFormatHour.substring(indexOfSign)));
 			}
 		}
 		return result;
@@ -41,11 +45,7 @@ public class Iso8601Deserializer {
 		return index != -1 ? index : str.indexOf('-');
 	}
 
-	private static void parseTimeZone(Calendar calendar, String tzStr){
-		calendar.setTimeZone(TimeZone.getTimeZone("GMT" + tzStr));
-	}
-
-	private static void parseHour(Calendar calendar, String basicFormatHour){
+	private static void parseHourWithoutHandlingTimeZone(Calendar calendar, String basicFormatHour){
 		basicFormatHour = basicFormatHour.replace(',', '.');
 		int indexOfDot = basicFormatHour.indexOf('.');
 		double fractionalPart = 0;
