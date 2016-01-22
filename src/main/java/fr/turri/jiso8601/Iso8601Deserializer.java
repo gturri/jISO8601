@@ -6,11 +6,13 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class Iso8601Deserializer {
-	public Date toDate(String toParse){
+	private Iso8601Deserializer(){}
+
+	public static Date toDate(String toParse){
 		return toCalendar(toParse).getTime();
 	}
 
-	public Calendar toCalendar(String toParse){
+	public static Calendar toCalendar(String toParse){
 		if ( toParse.indexOf('T') == -1 ){
 			return calendarWithDateOnly(toParse);
 		}
@@ -39,11 +41,11 @@ public class Iso8601Deserializer {
 		return index != -1 ? index : str.indexOf('-');
 	}
 
-	private void parseTimeZone(Calendar calendar, String tzStr){
+	private static void parseTimeZone(Calendar calendar, String tzStr){
 		calendar.setTimeZone(TimeZone.getTimeZone("GMT" + tzStr));
 	}
 
-	private void parseHour(Calendar calendar, String basicFormatHour){
+	private static void parseHour(Calendar calendar, String basicFormatHour){
 		basicFormatHour = basicFormatHour.replace(',', '.');
 		int indexOfDot = basicFormatHour.indexOf('.');
 		double fractionalPart = 0;
