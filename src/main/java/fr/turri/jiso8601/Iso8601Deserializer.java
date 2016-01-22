@@ -130,7 +130,9 @@ public class Iso8601Deserializer {
 	private static Calendar parseWeekDate(Calendar result, String basicFormatDate) {
 		result.set(Calendar.YEAR, Integer.parseInt(basicFormatDate.substring(0, 4)));
 		result.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(basicFormatDate.substring(5, 7)));
-		result.set(Calendar.DAY_OF_WEEK, basicFormatDate.length() == 7 ? 2 : (Integer.parseInt(basicFormatDate.substring(7)) + 1));
+		result.set(Calendar.DAY_OF_WEEK, basicFormatDate.length() == 7
+				? Calendar.MONDAY
+				: Calendar.SUNDAY + Integer.parseInt(basicFormatDate.substring(7)));
 		return result;
 	}
 
