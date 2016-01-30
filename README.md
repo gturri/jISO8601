@@ -26,21 +26,13 @@ Installation
 ============
 Using it with maven
 -------------------
-This package will soon be available on maven central. For now it needs to be build from source.
-For instance, on Ubuntu:
-
-    git clone https://github.com/gturri/jiso8601
-    cd jiso8601
-    sudo apt-get install maven
-    mvn install
-
-Then, in your pom.xml, add
+This package is available on maven central. To use it, you just need to add the following lines in your pom.xml:
 
 ```xml
 <dependency>
     <groupId>fr.turri</groupId>
     <artifactId>jISO8601</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 </dependency>
 ```
 
