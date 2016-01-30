@@ -39,3 +39,7 @@ This package is available on maven central. To use it, you just need to add the 
 Out of scope (for now)
 =====================
 Recurring time interval and Periods aren't supported. Feel free to open feature requests.
+
+Build status
+============
+Status: ![Status](https://travis-ci.org/gturri/jISO8601.svg?branch=master)
