@@ -52,6 +52,19 @@
             <goals>deploy</goals>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>1.1.7</version>
+          <configuration>
+            <targetClasses>
+              <param>fr.turri*</param>
+            </targetClasses>
+            <targetTests>
+              <param>fr.turri*</param>
+            </targetTests>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
