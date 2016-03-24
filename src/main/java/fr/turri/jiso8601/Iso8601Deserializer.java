@@ -13,10 +13,10 @@ public class Iso8601Deserializer {
 	}
 
 	public static Calendar toCalendar(String toParse){
-		if ( toParse.indexOf('T') == -1 ){
+		int indexOfT = toParse.indexOf('T');
+		if ( indexOfT == -1 ){
 			return buildCalendarWithDateOnly(toParse, toParse);
 		}
-		int indexOfT = toParse.indexOf('T');
 		Calendar result = buildCalendarWithDateOnly(toParse.substring(0, indexOfT), toParse);
 		return parseHour(result, toParse.substring(indexOfT+1));
 	}
