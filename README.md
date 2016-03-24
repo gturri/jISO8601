@@ -19,8 +19,8 @@ There are only two public methods:
     Date date = Iso8601Deserializer.toDate("1985-03-04T12:34:56Z");
 
 
-Each type of ISO8601 dates are supported (calendar, ordinal and week dates, basic and extended format)
-as weel as each format of hour and timezone.
+Each type of ISO8601 dates are supported (calendar, ordinal and week dates, basic and extended formats)
+as well as each format of hour and timezone.
 
 Installation
 ============
