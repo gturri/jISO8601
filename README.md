@@ -1,3 +1,15 @@
+```
+ _____________________________________
+/ This repo has moved to                \\
+\\ https://codeberg.org/gturri/jISO8601/ /
+  -------------------------------------
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\\
+                 ||----w |
+                 ||     ||
+```
+
 Overview
 ========
 jISO8601 is yet another library made to parse dates in Java. It may still be useful since:
